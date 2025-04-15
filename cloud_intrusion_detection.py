@@ -116,6 +116,28 @@ with tabs[0]:
     ax.grid(True)
     st.pyplot(fig)
 
+    st.subheader("📊 Combined Model Score Distribution")
+    fig, ax = plt.subplots(figsize=(7, 5))
+    sns.histplot(combined_prob[y == 0], bins=50, color='green', label="Normal", stat="density", kde=True, ax=ax)
+    sns.histplot(combined_prob[y == 1], bins=50, color='red', label="Attack", stat="density", kde=True, ax=ax)
+    ax.axvline(0.5, color='black', linestyle='--', label="Threshold = 0.5")
+    ax.set_title("Combined Score Distribution")
+    ax.set_xlabel("Combined Score")
+    ax.set_ylabel("Density")
+    ax.legend()
+    ax.grid(True)
+    st.pyplot(fig)
+
+    st.subheader("🧠 Random Forest Feature Importance")
+    importances = rf_model.feature_importances_
+    feature_names = df.drop("label", axis=1).columns
+    imp_df = pd.DataFrame({"Feature": feature_names, "Importance": importances}).sort_values(by="Importance", ascending=False)
+
+    fig, ax = plt.subplots(figsize=(7, 5))
+    sns.barplot(x="Importance", y="Feature", data=imp_df, palette="viridis", ax=ax)
+    ax.set_title("Feature Importance from Random Forest")
+    st.pyplot(fig)
+
 # === Single Prediction Tab ===
 with tabs[1]:
     st.subheader("🔍 Predict a Single Instance")
