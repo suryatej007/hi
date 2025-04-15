@@ -134,7 +134,7 @@ with tabs[1]:
     src_bytes = st.number_input("Src Bytes", min_value=0.0)
     dst_bytes = st.number_input("Dst Bytes", min_value=0.0)
     count = st.number_input("Count", min_value=0.0)
-    serror_rate = st.number_input("Serror Rate", min_value=0.0, max_value=1.0)
+    serror_rate = st.number_input("Serror Rate", min_value=0.0)
 
     input_array = np.array([[duration, src_bytes, dst_bytes, count, serror_rate]])
 
