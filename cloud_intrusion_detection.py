@@ -104,7 +104,7 @@ with tabs[0]:
     ax.grid(True)
     st.pyplot(fig)
 
-    st.subheader("Autoencoder Reconstruction Error Distribution")
+    st.subheader("🔍 Autoencoder Reconstruction Error Distribution")
     fig, ax = plt.subplots(figsize=(7, 5))
     sns.histplot(recon_error[y == 0], bins=100, color='green', label="Normal", stat="density", ax=ax)
     sns.histplot(recon_error[y == 1], bins=100, color='red', label="Attack", stat="density", ax=ax)
@@ -112,10 +112,9 @@ with tabs[0]:
     ax.set_title("Reconstruction Error Distribution")
     ax.set_xlabel("Reconstruction Error")
     ax.set_ylabel("Density")
+    ax.legend()
     ax.grid(True)
-    ax.legend()  # This ensures both 'Normal' and 'Attack' are shown
     st.pyplot(fig)
-
 
 # === Single Prediction Tab ===
 with tabs[1]:
