@@ -48,7 +48,8 @@ combined_pred = (combined_prob > 0.5).astype(int)
 def get_classification_df(y_true, y_pred, model_name):
     report_dict = classification_report(y_true, y_pred, output_dict=True)
     report_df = pd.DataFrame(report_dict).transpose().round(2)
-    return model_name, report_df
+    report_df['Model'] = model_name
+    return report_df
 
 # === Streamlit UI ===
 st.set_page_config(page_title="Cloud Intrusion Detection", layout="wide")
@@ -59,14 +60,17 @@ tabs = st.tabs(["📊 Evaluation", "🔍 Single Prediction"])
 # === Evaluation Tab ===
 with tabs[0]:
     st.subheader("📋 Classification Reports")
+    
+    # Get the classification reports and display them
+    rf_report = get_classification_df(y, rf_pred, "🔹 Random Forest")
+    ae_report = get_classification_df(y, ae_pred, "🔹 Autoencoder")
+    combined_report = get_classification_df(y, combined_pred, "🔹 Combined Model")
 
-    for model_name, report_df in [
-        get_classification_df(y, rf_pred, "🔹 Random Forest"),
-        get_classification_df(y, ae_pred, "🔹 Autoencoder"),
-        get_classification_df(y, combined_pred, "🔹 Combined Model"),
-    ]:
-        st.markdown(f"**{model_name}**")
-        st.dataframe(report_df.style.background_gradient(cmap='Blues'), use_container_width=True)
+    # Concatenate all reports into a single dataframe
+    all_reports = pd.concat([rf_report, ae_report, combined_report])
+    
+    # Display the concatenated reports with styling
+    st.dataframe(all_reports.style.background_gradient(cmap='Blues'), use_container_width=True)
 
     def plot_conf_matrix(cm, title, cmap):
         fig, ax = plt.subplots(figsize=(5, 4))
